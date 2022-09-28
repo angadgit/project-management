@@ -1,13 +1,22 @@
 import Link from "next/link";
-import { getSession } from 'next-auth/react'
+import DefaultLayout from '../components/DefaultLayout';
+import { getSession, useSession, signOut } from "next-auth/react"
 
 export default () => {
-  return (
-    <section className="container mx-auto text-center">
-      <h3 className="text-4xl font-bold">Profile Page</h3>
 
-      <Link href={"/"}>Home Page</Link>
-    </section>
+  const { data: session } = useSession()
+
+  return (
+    <DefaultLayout>
+      <section className="container mx-auto text-center">
+        <h3 className="text-4xl font-bold">Profile Page</h3>
+        <div className='details'>
+          <h5>{session.user.name}</h5>
+          <h5>{session.user.email}</h5>
+        </div>
+        <Link href={"/"}>Home Page</Link>
+      </section>
+    </DefaultLayout>
   )
 }
 
