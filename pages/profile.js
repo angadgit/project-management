@@ -2,7 +2,7 @@ import Link from "next/link";
 import DefaultLayout from '../components/DefaultLayout';
 import { getSession, useSession, signOut } from "next-auth/react"
 
-export default () => {
+export default function Profile () {
 
   const { data: session } = useSession()
 

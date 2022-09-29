@@ -32,12 +32,12 @@ export default function Login() {
             callbackUrl: "/"
         })
 
-        if(status.ok) router.push(status.url)
+        if (status.ok) router.push(status.url)
     }
 
     // Google Handler function
     async function handleGoogleSignin() {
-        signIn('google', { callbackUrl: "http://localhost:3000" })
+        signIn('google', { callbackUrl: "/" })
     }
 
     // Github Login 
@@ -103,7 +103,7 @@ export default function Login() {
                         </button>
                     </div>
                     <div className="input-button">
-                        <button type='button'  className={styles.button_custom}>
+                        <button type='button' className={styles.button_custom}>
                             Sign In with Github <Image src={'/assets/github.svg'} width={25} height={25}></Image>
                         </button>
                     </div>
@@ -111,7 +111,7 @@ export default function Login() {
 
                 {/* bottom */}
                 <p className='text-center text-gray-400 '>
-                    don't have an account yet? <Link href={'/register'}><a className='text-blue-700'>Sign Up</a></Link>
+                    dont have an account yet? <Link href={'/register'}><a className='text-blue-700'>Sign Up</a></Link>
                 </p>
             </section>
 
