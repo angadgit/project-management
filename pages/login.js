@@ -29,7 +29,7 @@ export default function Login() {
             redirect: false,
             email: values.email,
             password: values.password,
-            callbackUrl: "/"
+            callbackUrl: "https://project-management-vedvika.herokuapp.com"
         })
 
         if (status.ok) router.push(status.url)
@@ -37,7 +37,7 @@ export default function Login() {
 
     // Google Handler function
     async function handleGoogleSignin() {
-        signIn('google', { callbackUrl: "/" })
+        signIn('google', { callbackUrl: "https://project-management-vedvika.herokuapp.com" })
     }
 
     // Github Login 
