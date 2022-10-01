@@ -2,24 +2,36 @@ import { useReducer } from "react"
 import { BiBrush } from 'react-icons/bi'
 import Success from "../success"
 import Bug from "../bug"
-import { useQuery } from "react-query"
-import { getFunder } from "../../lib/helper"
+import { useQuery, useMutation, useQueryClient } from "react-query"
+import { getUser, getUsers, updateUser } from "../../lib/helper"
 
 export default function FunderUpdateForm({ formId, formData, setFormData }) {
-  const { isLoading, isError, data, error } = useQuery(['funder', formId], () => getFunders(formId))
-  console.log(data)
+
+  const queryClient = useQueryClient()
+  const { isLoading, isError, data, error } = useQuery(['users', formId], () => getUser(formId))
+  const UpdateMutation = useMutation((newData) => updateUser(formId, newData), {
+    onSuccess: async (data) => {
+      queryClient.prefetchQuery('users', getUsers)
+    }
+  })
 
   if (isLoading) return <div>Loading...!</div>
   if (isError) return <div>Error</div>
 
-  const { funderName, contactPerson, contactNumber, email, pan, funderType, funderCategory, addressLine1, addressLine2, country, state, pinCode, nationality, website } = data;
-  const [firstname, lastname] = funderName ? funderName.split('') : formData
+  const { funderName, contactPerson, contactNumber, email, pan, funderType, funderCategory, addressLine1, addressLine2, country, state, pinCode, nationality, website, } = data;
+  const [firstname, lastname] = funderName ? funderName.split(' ') : formData
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.keys(formData).length == 0) return console.log("Don't have Form Data");
-    console.log(formData)
+    let userName = `${formData.firstname ?? firstname} ${formData.lastname ?? lastname}`;
+    let updated = Object.assign({}, data, formData, { funderName: userName })
+    UpdateMutation.mutate(updated)    
   }
+
+  if (UpdateMutation.isLoading) return <div>Loading!</div>
+  if (UpdateMutation.isError) return <Bug message={addMutation.error.message}></Bug>
+  if (UpdateMutation.isSuccess) return <Success message={"Updated Successfully"}></Success>
+
 
   return (
     <form onSubmit={handleSubmit} className="grid lg:grid-cols-2 w-4/6 gap-4">
@@ -44,7 +56,7 @@ export default function FunderUpdateForm({ formId, formData, setFormData }) {
 
       <div className="flex gap-2 items-center">
         <div className="input-type w-full">
-          <select id="funderType" name="funderType" onChange={setFormData}  defaultValue={funderType} className="border w-full px-5 py-3 focus:outline-none rounded-md">
+          <select id="funderType" name="funderType" onChange={setFormData} defaultValue={funderType} className="border w-full px-5 py-3 focus:outline-none rounded-md">
             <option value="DEFAULT" disabled>Choose a Funter Type</option>
             <option value="CSR">CSR</option>
             <option value="Foundation">Foundation</option>

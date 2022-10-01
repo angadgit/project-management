@@ -3,6 +3,7 @@ import AddFunderForm from "./funderAddForm";
 import { useSelector } from "react-redux";
 import { useReducer } from "react";
 
+
 const formReducer = (state, event) => {
     return {
         ...state,

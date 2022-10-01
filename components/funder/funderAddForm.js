@@ -1,36 +1,36 @@
 import { useReducer, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useQueryClient, useMutation } from "react-query"
-import { addFunder, getFunders } from "../../lib/helper"
+import { addUser, getUsers } from "../../lib/helper"
 import Bug from "../bug"
 import Success from "../success"
 
-const funderAddFormReducer = (state, event) => {
-  return {
-    ...state,
-    [event.target.name]: event.target.value
-  }
-}
 
-export default function FunderAddForm() {
+export default function FunderAddForm({ formData, setFormData }) {
+
   const { data: session } = useSession()
-  const [formData, setFormData] = useReducer(funderAddFormReducer, {})
-  // const [user, setUser] = useState(session.user.email)
 
   const queryClient = useQueryClient()
-
-  const addMutation = useMutation(addFunder, {
+  const addMutation = useMutation(addUser, {
     onSuccess: () => {
-      queryClient.prefetchQuery('funders', getFunders)
+      queryClient.prefetchQuery('users', getUsers)
     }
   })
 
   // const user = session.user.email;
 
+  const validateData = () => {
+    if (Object.keys(formData).length == 0) return console.log("Don't have Form Data");
+    // else{
+
+    // }
+
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData)
-    if (Object.keys(formData).length == 0) return console.log("Don't have Form Data");
+    // console.log(formData)
+    if (validateData);
     let { firstname, lastname, contactPerson, contactNumber, email, pan, funderType, funderCategory, addressLine1, addressLine2, country, state, pinCode, nationality, website } = formData;
 
     const model = {
@@ -38,7 +38,6 @@ export default function FunderAddForm() {
       funderName: `${firstname} ${lastname}`,
       contactPerson, contactNumber, email, pan, funderType, funderCategory, addressLine1, addressLine2, country, state, pinCode, nationality, website
     }
-    console.log(model)
     addMutation.mutate(model)
   }
   if (addMutation.isLoading) return <div>Loading!</div>

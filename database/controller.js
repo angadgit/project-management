@@ -1,55 +1,58 @@
+
 /** Controller */
-import Funder from '../model/funderSchema'
+import Users from '../model/funderSchema'
 
-// get : http://localhost:3000/api/funderApi
-export async function getFunder(req, res) {
+// get : http://localhost:3000/api/users
+export async function getUsers(req, res) {
   try {
-    const funder = await Funder.find({})
+    const users = await Users.find({})
 
-    if (!funder) return res.status(404).json({ error: "Data not Found" })
-    res.status(200).json(funder)
+    if (!users) return res.status(404).json({ error: "Data not Found" })
+    res.status(200).json(users)
   } catch (error) {
     res.status(404).json({ error: "Error While Fetching Data" })
   }
 }
 
-// get : http://localhost:3000/api/funderApi/1
-export async function getFunders(req, res) {
+// get : http://localhost:3000/api/users/1
+export async function getUser(req, res) {
   try {
-    const { formId } = req.query;
-
-    if (formId) {
-      const funder = await Funder.findById(formId);
-      res.status(200).json(funder)
+    const userId = req.query;
+    let id = userId.formId
+    // console.log(id.formId)
+    if (id) {
+      const user = await Users.findById(id);
+      res.status(200).json(user)
     }
-    res.status(404).json({ error: "Funder not Selected...!" });
+    res.status(404).json({ error: "funder not Selected...!" });
   } catch (error) {
     res.status(404).json({ error: "Cannot get the User...!" })
   }
 }
 
-// post : http://localhost:3000/api/funderApi
-export async function postFunder(req, res) {
+// post : http://localhost:3000/api/users
+export async function postUser(req, res) {
   try {
-    // if (!formData) return res.status(404).json({ error: "Form Data Not Provided...!" });
-    const b = new Funder(req.body)
-    await b.save()
-    console.log(b)
-    res.status(200).json({ status: 201 })
+    const formData = req.body;
+    if (!formData) return res.status(404).json({ error: "Form Data Not Provided...!" });
+    Users.create(formData, function (err, data) {
+      return res.status(200).json(data)
+    })
   } catch (error) {
     return res.status(404).json({ error })
   }
 }
 
 // put : http://localhost:3000/api/funderApi/1
-export async function putFunder(req, res) {
+export async function putUser(req, res) {
   try {
-    const { funderId } = req.query;
+    const userId = req.query;
+    let id = userId.formId
     const formData = req.body;
 
-    if (funderId && formData) {
-      const funder = await Funder.findByIdAndUpdate(funderId, formData);
-      res.status(200).json(funder)
+    if (id && formData) {
+      const user = await Users.findByIdAndUpdate(id, formData);
+      res.status(200).json(user)
     }
     res.status(404).json({ error: "Funder Not Selected...!" })
   } catch (error) {
@@ -57,19 +60,21 @@ export async function putFunder(req, res) {
   }
 }
 
-// delete : http://localhost:3000/api/funderApi/1
-export async function deleteFunder(req, res) {
+// delete : http://localhost:3000/api/users/1
+export async function deleteUser(req, res) {
   try {
-    const { funderId } = req.query;
+    const userId = req.query;
+    let id = userId.formId
+    console.log(id)
 
-    if (funderId) {
-      const funder = await Funder.findByIdAndDelete(funderId)
-      return res.status(200).json(funder)
+    if (id) {
+      const user = await Users.findByIdAndDelete(id)
+      return res.status(200).json(user)
     }
 
     res.status(404).json({ error: "Funder Not Selected...!" })
 
   } catch (error) {
-    res.status(404).json({ error: "Error While Deleting the Funder...!" })
+    res.status(404).json({ error: "Error While Deleting the User...!" })
   }
 }
