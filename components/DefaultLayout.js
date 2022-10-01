@@ -8,6 +8,7 @@ import "antd/dist/antd.css"
 import Link from "next/link";
 import { getSession, useSession, signOut } from "next-auth/react"
 import { useRouter } from 'next/router';
+import Image from "next/image";
 
 const App = ({ children }) => {
   const router = useRouter()
@@ -20,7 +21,9 @@ const App = ({ children }) => {
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
+        <div className="logo my-5">
+        <Image src={'/assets/vedvika.png'} width={250} height={100} alt="github" className="mx-auto p-2"></Image>
+        </div>
         <Menu
           theme="dark"
           mode="inline"
