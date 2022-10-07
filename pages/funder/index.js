@@ -37,8 +37,8 @@ export default function Funder() {
     await dispatch(deleteAction(null))
   }
   
-  if(session){
-       return router.push('/')
+  if(!session){
+       return router.push('/login')
 
     }
 
