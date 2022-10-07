@@ -1,5 +1,5 @@
 import React from 'react'
-import { getSession } from "next-auth/react"
+import { getSession, useSession } from "next-auth/react"
 import DefaultLayout from '../../components/DefaultLayout';
 import { BiUserPlus } from "react-icons/bi";
 import FunderForm from '../../components/funder/funderForm';
@@ -9,8 +9,11 @@ import { toggleChangeAction, deleteAction } from '../../redux/reducer';
 import { deleteUser, getUsers } from '../../lib/helper';
 import { BiX, BiCheck } from "react-icons/bi";
 import { useQueryClient } from 'react-query';
+import { useRouter } from 'next/router';
 
 export default function Funder() {
+  const router = useRouter()
+  const {data: session} = useSession();
   const visible = useSelector((state) => state.app.client.toggleForm)
   const deleteId = useSelector(state => state.app.client.deleteId)
   const queryclient = useQueryClient();
@@ -33,6 +36,11 @@ export default function Funder() {
     console.log("cancel")
     await dispatch(deleteAction(null))
   }
+  
+  if(session){
+       return router.push('/')
+
+    }
 
   return (
     <DefaultLayout>
@@ -69,19 +77,19 @@ function DeleteComponent({ deletehandler, canclehandler }) {
   )
 }
 
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req })
+// export async function getServerSideProps({ req }) {
+//   const session = await getSession({ req })
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        premanent: false
-      }
-    }
-  }
-  // authorize user return session
-  return {
-    props: { session }
-  }
-}
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: "/login",
+//         premanent: false
+//       }
+//     }
+//   }
+//   // authorize user return session
+//   return {
+//     props: { session }
+//   }
+// }
