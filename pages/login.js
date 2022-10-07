@@ -36,14 +36,14 @@ export default function Login() {
     }
 
     // Google Handler function
-//     async function handleGoogleSignin() {
-//         signIn('google', { callbackUrl: "/" })
-//     }
+    async function handleGoogleSignin() {
+        signIn('google', { callbackUrl: "/" })
+    }
 
     // Github Login 
-    async function handleGithubSignin() {
-        signIn('github', { callbackUrl: "http://localhost:3000" })
-    }
+//     async function handleGithubSignin() {
+//         signIn('github', { callbackUrl: "http://localhost:3000" })
+//     }
 
     return (
         <Layout>
